@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const xmlparser = require('express-xml-bodyparser');
 const app = express();
-const puerto = 5000;
+const puerto = 3000;
 
 // app.use(express.json());
 app.use(xmlparser());
@@ -11,10 +11,10 @@ app.use(bodyParser.json());
 app.post('/webhook', (req, res) => {
     // console.log('Full Request:', req);
 // Parse the request body from the POST
-   let body = req.body;
+   let body = req;
    console.log('body', body)
 // Check the Incoming webhook message
-   console.log('DATA MESSAGE', JSON.stringify(req.body, null, 2));
+   console.log('DATA MESSAGE', JSON.stringify(req.body, null, 10));
    const incidentData = req.body['soap:envelope']['soap:body'][0]['incidentonchange'][0]['item'][0];
 
    const description = incidentData.description[0];
@@ -28,6 +28,7 @@ app.post('/webhook', (req, res) => {
    const customername = incidentData.customername[0];
    const statusname = incidentData.statusname[0];
    const receptorname = incidentData.receptorname[0];
+   const idbyproject = incidentData.idbyproject[0];
  
    // Imprime los datos
    console.log('Description:', description);
@@ -41,6 +42,7 @@ app.post('/webhook', (req, res) => {
    console.log('Customer Name:', customername);
    console.log('Status Name:', statusname);
    console.log('Receptor Name:', receptorname);
+   console.log('idbyproject:', idbyproject);
   res.status(200).send('Webhook recibido con éxito.');
 });
 
